@@ -1,0 +1,115 @@
+package {
+    default_applicable_licenses: ["device_grapheneos_gsi_clean_license"],
+}
+
+
+// System-level keymaster service implementation
+cc_binary {
+    name: "android.hardware.keymaster@3.0-service.gsi",
+    relative_install_path: "hw",
+    vendor: false,  // Build for system partition, not vendor
+    init_rc: ["keymaster/android.hardware.keymaster@3.0-service.rc"],
+    
+    srcs: [
+        "keymaster/service.cpp",
+        "keymaster/KeymasterDevice.cpp",
+    ],
+    
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+    
+    local_include_dirs: ["keymaster"],
+    
+    shared_libs: [
+        "liblog",
+        "libcutils",
+        "libbase",
+        "libutils",
+        "libhardware",
+        "libhidlbase",
+        "libdl",
+        "android.hardware.keymaster@3.0",
+        "libkeymaster3device",
+        "libkeymaster_messages",
+        "libsoftkeymasterdevice",
+        "libcrypto",
+        "libcppbor",
+    ],
+}
+
+// System-level health service implementation
+cc_binary {
+    name: "android.hardware.health@2.1-service.gsi",
+    relative_install_path: "hw",
+    vendor: false,  // Build for system partition, not vendor
+    init_rc: ["health/android.hardware.health@2.1-service.rc"],
+    
+    srcs: [
+        "health/service.cpp",
+        "health/HealthDevice.cpp",
+    ],
+    
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+    
+    local_include_dirs: ["health"],
+    
+    shared_libs: [
+        "liblog",
+        "libcutils",
+        "libbase",
+        "libutils",
+        "libhardware",
+        "libhidlbase",
+        "android.hardware.health@2.1",
+        "android.hardware.health@2.0",
+    ],
+    
+    static_libs: [
+        "android.hardware.health@1.0-convert",
+        "libbatterymonitor",
+        "libhealthloop",
+        "libhealth2impl",
+    ],
+}
+
+// System-level gatekeeper service implementation
+cc_binary {
+    name: "android.hardware.gatekeeper@1.0-service.gsi",
+    relative_install_path: "hw",
+    vendor: false,  // Build for system partition, not vendor
+    init_rc: ["gatekeeper/android.hardware.gatekeeper@1.0-service.rc"],
+    
+    srcs: [
+        "gatekeeper/service.cpp",
+        "gatekeeper/GatekeeperDevice.cpp",
+    ],
+    
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+    
+    local_include_dirs: ["gatekeeper"],
+    
+    shared_libs: [
+        "liblog",
+        "libcutils",
+        "libbase",
+        "libutils",
+        "libhardware",
+        "libhidlbase",
+        "android.hardware.gatekeeper@1.0",
+        "libgatekeeper",
+    ],
+}
+
+// Include keystore subdirectory
+subdirs = ["keystore"]
