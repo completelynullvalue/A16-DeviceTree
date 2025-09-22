@@ -1,0 +1,7 @@
+service android.hardware.health@2.1-service /system/bin/hw/android.hardware.health@2.1-service.gsi
+    class hal
+    user system
+    group system
+    seclabel u:r:hal_health_2_1_gsi:s0
+    interface android.hardware.health@2.1::IHealth default
+    interface android.hardware.health@2.0::IHealth default
