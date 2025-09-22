@@ -1,0 +1,72 @@
+package {
+    default_applicable_licenses: ["device_grapheneos_gsi_clean_license"],
+}
+
+// Dummy keystore2 implementation is now in AOSP system/security/keystore2/
+
+// Added automatically by a large-scale-change
+// See: http://go/android-license-faq
+license {
+    name: "device_grapheneos_gsi_clean_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+    ],
+    // large-scale-change unable to identify any license_text files
+}
+
+// GSI Clean device configuration
+// Shell scripts are handled via PRODUCT_COPY_FILES in gsi_product.mk
+
+prebuilt_etc {
+    name: "health-hal.rc",
+    src: "health-hal.rc",
+    sub_dir: "init",
+    filename: "health-hal.rc",
+}
+
+prebuilt_etc {
+    name: "software-keymaster.rc",
+    src: "software-keymaster.rc",
+    sub_dir: "init",
+    filename: "software-keymaster.rc",
+}
+
+prebuilt_etc {
+    name: "init.gsi_clean.rc",
+    src: "init.gsi_clean.rc",
+    sub_dir: "init",
+    filename: "init.gsi_clean.rc",
+}
+
+prebuilt_etc {
+    name: "disable-vendor-services.rc",
+    src: "disable-vendor-services.rc",
+    sub_dir: "init",
+    filename: "disable-vendor-services.rc",
+}
+
+prebuilt_etc {
+    name: "fix-linkerconfig.rc",
+    src: "fix-linkerconfig.rc",
+    sub_dir: "init",
+    filename: "fix-linkerconfig.rc",
+}
+
+prebuilt_etc {
+    name: "cgroup-setup.rc",
+    src: "cgroup-setup.rc",
+    sub_dir: "init",
+    filename: "cgroup-setup.rc",
+}
+
+prebuilt_etc {
+    name: "gsi-vendor-mount.rc",
+    src: "gsi-vendor-mount.rc",
+    sub_dir: "init",
+    filename: "gsi-vendor-mount.rc",
+}
+
+// HAL services are defined in hal/Android.bp
+// SELinux policies are defined in /system/sepolicy/private/gsi_clean.te
+// GSI keystore policy is included via BOARD_SEPOLICY_DIRS in BoardConfig.mk

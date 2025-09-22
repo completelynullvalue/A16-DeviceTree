@@ -1,0 +1,35 @@
+# Fix linkerconfig VNDK APEX issues for GSI
+# This addresses the missing VNDK paths and undefined variables
+
+on early-init
+    # Set required environment variables for linkerconfig
+    export SANITIZER_DEFAULT_VENDOR ""
+    
+    # Create symlinks for expected VNDK APEX paths
+    mkdir /apex 0755 root root
+    mkdir /apex/com.android.vndk.v31 0755 root root
+    
+    # Mount or symlink the actual VNDK APEX if available
+    exec - root root -- /system/bin/sh -c "if [ -f /system/system_ext/apex/com.android.vndk.v31.apex ]; then mount -o bind /system/system_ext/apex/com.android.vndk.v31.apex /apex/com.android.vndk.v31.apex 2>/dev/null || true; fi"
+    
+    # Set linkerconfig fallback properties
+    setprop ro.vndk.version 31
+    setprop ro.vndk.lite true
+
+# Alternative: Skip linkerconfig bootstrap if it fails
+on property:init.svc.apexd-bootstrap=stopped
+    # If apexd-bootstrap fails, set fallback linker config
+    setprop ro.config.linkerconfig.generated false
+    setprop ro.config.linkerconfig.fallback true
+
+
+
+
+
+
+
+
+
+
+
+

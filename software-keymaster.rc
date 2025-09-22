@@ -1,0 +1,5 @@
+# GrapheneOS GSI Clean - Software Keymaster Services
+# Provides software fallback implementations for missing hardware services
+# NOTE: This file is disabled to avoid conflicts with our GSI HAL services
+# Our GSI services are defined in hal/*/android.hardware.*-service.rc files
+

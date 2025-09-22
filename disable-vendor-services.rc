@@ -1,0 +1,30 @@
+# GrapheneOS GSI Clean - Disable vendor services that don't exist
+# This prevents the system from getting stuck trying to start non-existent services
+
+# Disable vendor keymint service (doesn't exist in GSI)
+service vendor.keymint-default /system/bin/true
+    class early_hal
+    user nobody
+    group nobody
+    oneshot
+    disabled
+
+# Disable hdcp_hal service (hardware-specific, not needed for basic functionality)
+service hdcp_hal /system/bin/true
+    class early_hal
+    user nobody
+    group nobody
+    oneshot
+    disabled
+
+
+
+
+
+
+
+
+
+
+
+

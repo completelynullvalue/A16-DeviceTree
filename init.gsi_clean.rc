@@ -1,0 +1,35 @@
+# GrapheneOS GSI Clean init configuration
+# This file defines services and actions for GSI builds
+
+# APEX and linkerconfig fixes for GSI compatibility
+on early-init
+    # Set required environment variables for linkerconfig
+    export SANITIZER_DEFAULT_VENDOR ""
+    
+    # APEX compatibility properties
+    setprop ro.vndk.version 31
+    setprop ro.vndk.lite true
+    setprop ro.config.linkerconfig.fallback true
+
+# Keystore integration actions (converted from shell script to avoid SELinux issues)
+on post-fs-data
+    # Create necessary directories for keystore integration
+    mkdir /data/misc/keystore 0700 keystore keystore
+    mkdir /data/vendor/keystore 0700 keystore keystore
+    mkdir /data/vendor/gatekeeper 0700 system system
+    
+    # Set software keystore properties for GSI compatibility
+    setprop ro.hardware.keystore software
+    setprop ro.hardware.gatekeeper software
+    setprop ro.hardware.keymaster software
+    setprop ro.crypto.allow_encrypt_override true
+    # Force keystore2 to use software implementations
+    setprop ro.keystore.use_software_implementations true
+
+# Additional keystore setup after data is available
+on property:sys.boot_completed=1
+    # Log keystore integration completion
+    write /data/vendor/keystore/integration.log "GSI Keystore integration completed"
+    chmod 0644 /data/vendor/keystore/integration.log
+
+# Note: CGroup setup is handled by vendor init to avoid conflicts

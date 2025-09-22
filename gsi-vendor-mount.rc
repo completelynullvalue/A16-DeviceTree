@@ -1,0 +1,58 @@
+# GSI Clean - Vendor Partition Mounting
+# Mounts system libraries to vendor paths for GSI compatibility
+
+on post-fs
+    # Create vendor directories if they don't exist
+    mkdir /vendor 0755 root root
+    mkdir /vendor/bin 0755 root root
+    mkdir /vendor/bin/hw 0755 root root
+    mkdir /vendor/lib 0755 root root
+    mkdir /vendor/lib64 0755 root root
+    mkdir /vendor/lib/hw 0755 root root
+    mkdir /vendor/lib64/hw 0755 root root
+    mkdir /vendor/etc 0755 root root
+    mkdir /vendor/etc/init 0755 root root
+
+    # Mount system libraries to vendor paths for keymaster
+    mount /system/lib64/android.hardware.keymaster@3.0.so /vendor/lib64/android.hardware.keymaster@3.0.so bind || true
+    mount /system/lib/android.hardware.keymaster@3.0.so /vendor/lib/android.hardware.keymaster@3.0.so bind || true
+    mount /system/lib64/libkeymaster3device.so /vendor/lib64/libkeymaster3device.so bind || true
+    mount /system/lib/libkeymaster3device.so /vendor/lib/libkeymaster3device.so bind || true
+    mount /system/lib64/libkeymaster_messages.so /vendor/lib64/libkeymaster_messages.so bind || true
+    mount /system/lib/libkeymaster_messages.so /vendor/lib/libkeymaster_messages.so bind || true
+
+    # Mount system libraries to vendor paths for health
+    mount /system/lib64/android.hardware.health@2.1.so /vendor/lib64/android.hardware.health@2.1.so bind || true
+    mount /system/lib/android.hardware.health@2.1.so /vendor/lib/android.hardware.health@2.1.so bind || true
+    mount /system/lib64/android.hardware.health@2.0.so /vendor/lib64/android.hardware.health@2.0.so bind || true
+    mount /system/lib/android.hardware.health@2.0.so /vendor/lib/android.hardware.health@2.0.so bind || true
+
+    # Mount system libraries to vendor paths for gatekeeper
+    mount /system/lib64/android.hardware.gatekeeper@1.0.so /vendor/lib64/android.hardware.gatekeeper@1.0.so bind || true
+    mount /system/lib/android.hardware.gatekeeper@1.0.so /vendor/lib/android.hardware.gatekeeper@1.0.so bind || true
+    mount /system/lib64/libgatekeeper.so /vendor/lib64/libgatekeeper.so bind || true
+    mount /system/lib/libgatekeeper.so /vendor/lib/libgatekeeper.so bind || true
+
+    # Mount system services to vendor paths
+    mount /system/bin/hw/android.hardware.keymaster@3.0-service /vendor/bin/hw/android.hardware.keymaster@3.0-service bind || true
+    mount /system/bin/hw/android.hardware.health@2.1-service /vendor/bin/hw/android.hardware.health@2.1-service bind || true
+    mount /system/bin/hw/android.hardware.gatekeeper@1.0-service /vendor/bin/hw/android.hardware.gatekeeper@1.0-service bind || true
+
+    # Mount system RC files to vendor paths
+    mount /system/etc/init/software-keymaster.rc /vendor/etc/init/android.hardware.keymaster@3.0-service.rc bind || true
+    mount /system/etc/init/health-hal.rc /vendor/etc/init/android.hardware.health@2.1-service.rc bind || true
+
+    # Set vendor properties for compatibility
+    setprop ro.vendor.build.fingerprint ${ro.build.fingerprint}
+    setprop ro.vendor.build.version.release ${ro.build.version.release}
+    setprop ro.vendor.build.version.security_patch ${ro.build.version.security_patch}
+    setprop ro.vendor.product.device ${ro.product.device}
+    setprop ro.vendor.product.model ${ro.product.model}
+    setprop ro.vendor.product.brand ${ro.product.brand}
+    setprop ro.vendor.product.manufacturer ${ro.product.manufacturer}
+
+on early-boot
+    # Start vendor services
+    start android.hardware.keymaster@3.0-service
+    start android.hardware.health@2.1-service
+    start android.hardware.gatekeeper@1.0-service

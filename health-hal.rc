@@ -1,0 +1,4 @@
+# Health HAL service for GSI compatibility
+# Provides basic health interface to prevent service lookup failures
+# NOTE: This file is disabled to avoid conflicts with our GSI HAL services
+# Our GSI services are defined in hal/*/android.hardware.*-service.rc files

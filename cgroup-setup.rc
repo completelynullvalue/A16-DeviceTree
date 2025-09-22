@@ -1,0 +1,27 @@
+# Minimal CPUSet / CGroup setup for GSI compatibility
+# Prevents keystore2 crashes
+
+on init
+    # Create a separate mountpoint
+    mkdir /dev/cpuset-gsi 0755 system system
+
+    # Mount cpuset controller here
+    mount cgroup none /dev/cpuset-gsi cpuset nodev noexec nosuid
+
+    # Create standard cpuset directories under the real controller
+    mkdir /dev/cpuset-gsi/foreground 0755 system system
+    mkdir /dev/cpuset-gsi/background 0755 system system
+    mkdir /dev/cpuset-gsi/system-background 0755 system system
+    mkdir /dev/cpuset-gsi/top-app 0755 system system
+
+    # Enable clone_children on all directories
+    write /dev/cpuset-gsi/cgroup.clone_children 1
+    write /dev/cpuset-gsi/foreground/cgroup.clone_children 1
+    write /dev/cpuset-gsi/background/cgroup.clone_children 1
+    write /dev/cpuset-gsi/system-background/cgroup.clone_children 1
+    write /dev/cpuset-gsi/top-app/cgroup.clone_children 1
+
+    # Remove vendor cpuset mount (if exists) and symlink our GSI mount
+    umount /dev/cpuset
+    rmdir /dev/cpuset
+    symlink /dev/cpuset-gsi /dev/cpuset
