@@ -1,0 +1,8 @@
+service android.hardware.gatekeeper@1.0-service /system/bin/hw/android.hardware.gatekeeper@1.0-service.gsi
+    class early_hal
+    user system
+    group system
+    seclabel u:r:hal_gatekeeper_1_0_gsi:s0
+    interface android.hardware.gatekeeper@1.0::IGatekeeper default
+    # High priority to start before keystore2
+    priority 0
