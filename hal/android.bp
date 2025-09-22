@@ -110,6 +110,3 @@ cc_binary {
         "libgatekeeper",
     ],
 }
-
-// Include keystore subdirectory
-subdirs = ["keystore"]
