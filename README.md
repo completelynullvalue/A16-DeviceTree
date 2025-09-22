@@ -33,18 +33,8 @@ To build with this device tree:
 
 ```bash
 lunch gsi_arm64-userdebug
-mka adbd recoveryimage
+make systemimage
 ```
-
-## AVB Configuration
-
-The AVB configuration is properly set with:
-- `BOARD_AVB_ROLLBACK_INDEX := 3`
-- `BOARD_AVB_ROLLBACK_INDEX_LOCATION := 1`
-- `BOARD_AVB_SYSTEM_ROLLBACK_INDEX := 3`
-- `BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 1`
-
-This avoids the timestamp-based rollback index that causes build failures.
 
 
 
