@@ -1,0 +1,8 @@
+service android.hardware.keymaster@3.0-service /system/bin/hw/android.hardware.keymaster@3.0-service.gsi
+    class early_hal
+    user system
+    group system
+    seclabel u:r:hal_keymaster_3_0_gsi:s0
+    interface android.hardware.keymaster@3.0::IKeymasterDevice default
+    # High priority to start before keystore2
+    priority 0
